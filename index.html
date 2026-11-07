@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeHome - Perumnas Pesona Cirebon Regency</title>
+  <meta name="description" content="SafeHome - Pelaporan kejadian dan pemantauan keamanan lingkungan Perumnas Pesona Cirebon Regency">
+  
+  <!-- Google Fonts: Bricolage Grotesque (Judul/Angka), Public Sans (Isi), IBM Plex Mono (ID/Jam) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- MASTER APPLICATION LAYOUT (Full Width Desktop & Tablet/Mobile) -->
+  <div class="app-container">
+
+    <!-- SIDEBAR NAVIGATION (Desktop Left Sidebar) -->
+    <aside id="app-sidebar" class="app-sidebar" style="display:none;">
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">SafeHome</span>
+          <span class="sidebar-brand-subtitle">Pesona Cirebon</span>
+        </div>
+      </div>
+
+      <!-- Current User Profile Card (Clickable to Profile) -->
+      <div class="sidebar-user-info cursor-pointer" id="sidebar-user-card" onclick="App.navigateTo('screen-profil')" title="Buka Profil Saya">
+        <div class="sidebar-user-avatar" id="sidebar-user-initial">N</div>
+        <div class="sidebar-user-details">
+          <span class="sidebar-user-name" id="sidebar-user-name">Bu Nadhif</span>
+          <span class="sidebar-user-id" id="sidebar-user-id">ID: C-12</span>
+          <span class="sidebar-user-role" id="sidebar-user-role">Penghuni · C-12</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links (Dynamic per Active Role) -->
+      <nav id="sidebar-nav-links" class="sidebar-menu">
+        <!-- Injected dynamically via App.renderNavigationLinks() -->
+      </nav>
+
+      <!-- Sidebar Footer (Tombol Keluar) -->
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="App.logout()">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Keluar</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER (Top Bar + Responsive Content) -->
+    <div class="app-main">
+
+      <!-- TOP APPLICATION BAR -->
+      <header id="app-topbar" class="app-topbar" style="display:none;">
+        <div class="topbar-left">
+          <button class="mobile-toggle-btn" onclick="App.toggleMobileSidebar()">
+            <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="topbar-page-info">
+            <span class="topbar-location-subtitle">Perumnas Pesona Cirebon Regency</span>
+            <span id="topbar-page-title" class="topbar-page-title">Beranda</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="topbar-clock-badge">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="clock-live-time">14:31</span> WIB
+          </div>
+          <button class="btn-topbar-profile" onclick="App.navigateTo('screen-profil')" title="Profil Saya">
+            <span id="topbar-user-avatar" style="width:22px; height:22px; border-radius:var(--card-radius); background:var(--action-main); color:#FFF; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; overflow:hidden;">N</span>
+            <span id="topbar-user-name">Bu Nadhif</span>
+          </button>
+          <button class="btn-topbar-logout" onclick="App.logout()">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Keluar</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- CONTENT BODY (SCREENS CONTAINER) -->
+      <div class="content-body">
+
+        <!-- ==============================================
+             LAYAR 1: LOGIN (PILIH PERAN)
+        =============================================== -->
+        <section id="screen-login" class="screen-view active">
+          <div class="login-page-container">
+            <div class="login-card-wrapper">
+              <div class="login-brand-header">
+                <div class="login-brand-logo">
+                  <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <h1 class="login-brand-title">SafeHome</h1>
+                <div class="login-brand-subtitle">PERUMNAS PESONA CIREBON REGENCY</div>
+                <p class="login-brand-desc">
+                  Pelaporan kejadian dan pemantauan keamanan lingkungan.
+                </p>
+              </div>
+
+              <form id="login-form" class="form-layout" autocomplete="off">
+                <div class="form-group">
+                  <label class="form-label" for="login-user-id">Nomor rumah atau ID petugas</label>
+                  <input type="text" id="login-user-id" name="safehome_account_token_id" class="form-input" placeholder="Contoh: C-12 atau SAT-03" value="" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="login-password">Kata sandi</label>
+                  <input type="password" id="login-password" name="safehome_secret_key_access" class="form-input" placeholder="Kata sandi" value="" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly')">
+                </div>
+
+                <div style="margin-top: 6px;">
+                  <span class="form-label">Masuk sebagai</span>
+                  
+                  <div class="login-role-grid">
+                    <!-- Penghuni -->
+                    <div class="login-role-choice" data-role="penghuni">
+                      <div class="role-check-indicator">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <div class="login-role-icon">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                      </div>
+                      <div>
+                        <div class="login-role-name">Penghuni</div>
+                        <div class="login-role-desc">Lapor kejadian dan pantau statusnya</div>
+                      </div>
+                    </div>
+
+                    <!-- Petugas Keamanan -->
+                    <div class="login-role-choice" data-role="satpam">
+                      <div class="role-check-indicator">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <div class="login-role-icon">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                      </div>
+                      <div>
+                        <div class="login-role-name">Petugas Keamanan</div>
+                        <div class="login-role-desc">Terima laporan dan catat penanganan</div>
+                      </div>
+                    </div>
+
+                    <!-- Owner Perumnas -->
+                    <div class="login-role-choice" data-role="owner">
+                      <div class="role-check-indicator">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <div class="login-role-icon">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      </div>
+                      <div>
+                        <div class="login-role-name">Owner Perumnas</div>
+                        <div class="login-role-desc">Pantau tiap blok dan kinerja satpam</div>
+                      </div>
+                    </div>
+
+                    <!-- Direktur -->
+                    <div class="login-role-choice" data-role="direktur">
+                      <div class="role-check-indicator">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <div class="login-role-icon">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                      </div>
+                      <div>
+                        <div class="login-role-name">Direktur</div>
+                        <div class="login-role-desc">Ringkasan dan laporan periodik</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Error Message Container -->
+                <div id="login-error-msg" class="login-error-msg"></div>
+
+                <button type="submit" class="btn-main" style="width: 100%; padding: 12px; margin-top: 8px;">
+                  Masuk ke Aplikasi
+                </button>
+
+                <!-- Tautan Lupa ID atau Kata Sandi & Daftar -->
+                <div style="text-align: center; margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+                  <button type="button" class="btn-link-action" onclick="App.openForgotModal()" style="background: none; border: none; color: var(--action-main); font-size: 12.5px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 4px;">
+                    Lupa ID atau kata sandi?
+                  </button>
+                  <button type="button" id="btn-goto-register" class="btn-register-link" onclick="App.navigateTo('screen-register')">
+                    Belum punya akun? Daftar sebagai penghuni
+                  </button>
+                </div>
+              </form>
+
+              <p style="font-size: 12px; color: var(--action-text); text-align: center; margin-top: 18px; line-height: 1.5;">
+                Butuh bantuan masuk? Hubungi pos keamanan Perumnas Pesona Cirebon Regency.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR PENDAFTARAN PENGHUNI
+        =============================================== -->
+        <section id="screen-register" class="screen-view">
+          <div class="login-page-container">
+            <div class="login-card-wrapper">
+
+              <!-- Header brand mirip login -->
+              <div class="login-brand-header">
+                <div class="login-brand-logo">
+                  <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <h1 class="login-brand-title">Daftar Penghuni</h1>
+                <div class="login-brand-subtitle">PERUMNAS PESONA CIREBON REGENCY</div>
+                <p class="login-brand-desc">Isi data di bawah untuk membuat akun penghuni. Akun aktif setelah diverifikasi Owner.</p>
+              </div>
+
+              <!-- Panel: Form Pendaftaran -->
+              <div id="register-form-panel">
+                <form id="form-register" class="form-layout" novalidate>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg-name">Nama Lengkap</label>
+                    <input type="text" id="reg-name" class="form-input" placeholder="Nama sesuai KTP" autocomplete="name">
+                    <div id="err-reg-name" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Jenis Kelamin</label>
+                    <div style="display:flex; gap:18px; margin-top:6px;">
+                      <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13.5px; color:var(--text-main);">
+                        <input type="radio" name="reg-jk" value="L" style="accent-color:var(--action-main);"> Laki-laki
+                      </label>
+                      <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13.5px; color:var(--text-main);">
+                        <input type="radio" name="reg-jk" value="P" style="accent-color:var(--action-main);"> Perempuan
+                      </label>
+                    </div>
+                    <div id="err-reg-jk" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Blok</label>
+                    <div class="blok-picker-reg" id="reg-blok-picker">
+                      <button type="button" data-val="A">A</button>
+                      <button type="button" data-val="B">B</button>
+                      <button type="button" data-val="C">C</button>
+                      <button type="button" data-val="D">D</button>
+                      <button type="button" data-val="E">E</button>
+                      <button type="button" data-val="F">F</button>
+                    </div>
+                    <div id="err-reg-blok" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg-nomor">Nomor Rumah</label>
+                    <input type="text" id="reg-nomor" class="form-input" placeholder="Contoh: 12" inputmode="numeric">
+                    <div id="err-reg-nomor" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg-phone">Nomor HP (10-13 digit)</label>
+                    <input type="tel" id="reg-phone" class="form-input" placeholder="0812xxxxxxxx" inputmode="numeric" autocomplete="tel">
+                    <div id="err-reg-phone" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg-email">Alamat Email</label>
+                    <input type="email" id="reg-email" class="form-input" placeholder="nama@email.com" autocomplete="email">
+                    <div id="err-reg-email" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg-password">Kata Sandi (min. 8 karakter)</label>
+                    <input type="password" id="reg-password" class="form-input" placeholder="Minimal 8 karakter" autocomplete="new-password">
+                    <div id="err-reg-password" class="field-error-msg"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg-password2">Konfirmasi Kata Sandi</label>
+                    <input type="password" id="reg-password2" class="form-input" placeholder="Ulangi kata sandi" autocomplete="new-password">
+                    <div id="err-reg-password2" class="field-error-msg"></div>
+                  </div>
+
+                  <div id="register-error-msg" class="login-error-msg"></div>
+                  <div id="register-rate-limit-msg" style="display:none;" class="rate-limit-notice"></div>
+
+                  <button type="submit" class="btn-main" style="width:100%; padding:12px; margin-top:8px;">Kirim Pendaftaran</button>
+
+                  <div style="text-align:center; margin-top:12px;">
+                    <button type="button" class="btn-register-link" onclick="App.navigateTo('screen-login')">
+                      Sudah punya akun? Masuk
+                    </button>
+                  </div>
+
+                  <div class="register-info-note" style="margin-top:16px;">
+                    Akun petugas keamanan (Satpam) dibuat langsung oleh Owner Perumnas. Hubungi pos keamanan jika Anda adalah satpam baru.
+                  </div>
+                </form>
+              </div>
+
+              <!-- Panel: Konfirmasi Berhasil (tersembunyi, tampil setelah submit) -->
+              <div id="register-success-panel" style="display:none;">
+                <div class="register-success-card">
+                  <div class="register-success-icon">
+                    <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <h2 style="font-size:20px; margin-bottom:8px;">Pendaftaran Terkirim</h2>
+                  <p style="font-size:13.5px; color:var(--action-text); line-height:1.6; margin-bottom:16px;">
+                    Akun Anda akan aktif setelah diverifikasi oleh Owner Perumnas. Simpan ID login Anda berikut:
+                  </p>
+                  <div id="register-success-id" class="register-success-id">-</div>
+                  <p style="font-size:12px; color:var(--action-text); margin-bottom:20px;">Gunakan ID ini saat masuk ke aplikasi setelah disetujui.</p>
+                  <button type="button" id="btn-copy-reg-id" class="btn-main" style="margin-bottom:12px; width:100%;" onclick="App.copyRegisteredId()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Salin ID Login</span>
+                  </button>
+                  <button type="button" class="btn-outline-main" style="width:100%;" onclick="App.navigateTo('screen-login')">
+                    Kembali ke Halaman Login
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR PROFIL SAYA (SEMUA PERAN)
+        =============================================== -->
+        <section id="screen-profil" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Profil Saya</h2>
+              <p>Kelola data akun, informasi kontak, dan kata sandi Anda</p>
+            </div>
+            <button class="btn-outline-main" onclick="App.navigateBackFromProfile()">
+              <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>Kembali</span>
+            </button>
+          </div>
+
+          <div class="grid-2">
+            <!-- Card 1: Data Profil -->
+            <div class="card">
+              <h3 class="card-title">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Informasi Pengguna</span>
+              </h3>
+
+              <!-- Foto Profil Upload -->
+              <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; padding:14px; background:var(--bg-page); border-radius:var(--card-radius);">
+                <div id="profile-avatar-display" class="profile-avatar-wrap">N</div>
+                <div>
+                  <div style="font-weight:700; font-size:14px; margin-bottom:4px;">Foto Profil</div>
+                  <div style="font-size:12px; color:var(--action-text); margin-bottom:8px;">Format gambar (JPG, PNG, WebP), maksimal 1 MB</div>
+                  <input type="file" id="profile-photo-input" accept="image/*" style="display:none;">
+                  <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn-outline-main" style="padding:4px 10px; font-size:12px;" onclick="document.getElementById('profile-photo-input').click()">
+                      <svg class="svg-icon" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                      <span>Unggah Foto</span>
+                    </button>
+                    <button type="button" id="btn-remove-profile-photo" class="btn-table-action action-danger" style="display:none;" onclick="App.removeProfilePhoto()">
+                      Hapus
+                    </button>
+                  </div>
+                  <div id="err-profile-photo" class="field-error-msg"></div>
+                </div>
+              </div>
+
+              <!-- Form Profil -->
+              <form id="form-profile" class="form-layout">
+                <!-- ID Login (Readonly + Tombol Salin) -->
+                <div class="form-group">
+                  <label class="form-label" for="profile-login-id">ID Login</label>
+                  <div style="display:flex; gap:8px;">
+                    <input type="text" id="profile-login-id" class="form-input" readonly style="background:var(--bg-page); cursor:default; font-family:'IBM Plex Mono', monospace; font-weight:600; color:var(--text-main);" value="">
+                    <button type="button" id="btn-copy-profile-id" class="btn-outline-main" onclick="App.copyProfileId()" style="white-space:nowrap; min-width:85px; justify-content:center;" title="Salin ID Login">
+                      <svg class="svg-icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                      <span>Salin</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="profile-name">Nama Lengkap</label>
+                  <input type="text" id="profile-name" class="form-input" placeholder="Nama lengkap">
+                  <div id="err-profile-name" class="field-error-msg"></div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Jenis Kelamin</label>
+                  <div style="display:flex; gap:18px; margin-top:6px;">
+                    <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13.5px; color:var(--text-main);">
+                      <input type="radio" name="profile-jk" id="profile-jk-l" value="L" style="accent-color:var(--action-main);"> Laki-laki
+                    </label>
+                    <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13.5px; color:var(--text-main);">
+                      <input type="radio" name="profile-jk" id="profile-jk-p" value="P" style="accent-color:var(--action-main);"> Perempuan
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Role specific fields -->
+                <div id="profile-role-fields" class="form-layout" style="gap:14px;"></div>
+
+                <div class="form-group">
+                  <label class="form-label" for="profile-phone">Nomor HP / WhatsApp</label>
+                  <input type="tel" id="profile-phone" class="form-input" placeholder="0812xxxxxxxx (10-13 digit angka)">
+                  <div id="err-profile-phone" class="field-error-msg"></div>
+                </div>
+
+                <div class="form-group" id="group-profile-email">
+                  <label class="form-label" for="profile-email">Alamat Email</label>
+                  <input type="email" id="profile-email" class="form-input" placeholder="nama@email.com">
+                  <div id="err-profile-email" class="field-error-msg"></div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+                  <button type="button" class="btn-outline-main" onclick="App.navigateBackFromProfile()">Batal</button>
+                  <button type="submit" class="btn-main">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Card 2: Ubah Kata Sandi -->
+            <div class="card">
+              <h3 class="card-title">
+                <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>Ubah Kata Sandi</span>
+              </h3>
+
+              <form id="form-change-password" class="form-layout">
+                <div class="form-group">
+                  <label class="form-label" for="pwd-old">Kata Sandi Lama</label>
+                  <input type="password" id="pwd-old" class="form-input" placeholder="Masukkan kata sandi saat ini">
+                  <div id="err-pwd-old" class="field-error-msg"></div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="pwd-new">Kata Sandi Baru</label>
+                  <input type="password" id="pwd-new" class="form-input" placeholder="Minimal 8 karakter">
+                  <div id="err-pwd-new" class="field-error-msg"></div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="pwd-confirm">Konfirmasi Kata Sandi Baru</label>
+                  <input type="password" id="pwd-confirm" class="form-input" placeholder="Ulangi kata sandi baru">
+                  <div id="err-pwd-confirm" class="field-error-msg"></div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; margin-top:8px;">
+                  <button type="submit" class="btn-main">Perbarui Kata Sandi</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 2: PENGHUNI - BERANDA
+        =============================================== -->
+        <section id="screen-penghuni-home" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2 id="penghuni-home-greeting">Selamat siang</h2>
+              <p id="penghuni-home-subtitle">Memuat...</p>
+            </div>
+            <button class="btn-outline-main" onclick="App.showToast('2 notifikasi baru dari pos satpam')">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span>Notifikasi (2)</span>
+            </button>
+          </div>
+
+          <!-- Satpam Bertugas Card & Action Cards Grid -->
+          <div class="grid-3">
+            <div class="card" style="display:flex; align-items:center; justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <div style="width:40px; height:40px; border-radius:var(--card-radius); background:var(--status-baru-bg); color:var(--action-text); display:flex; align-items:center; justify-content:center;">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div>
+                  <div id="home-guard-header" style="font-size:11px; text-transform:uppercase; color:var(--action-text); font-weight:600;">SATPAM BERTUGAS</div>
+                  <div id="home-guard-name" style="font-size:16px; font-weight:700; color:var(--text-main);">Memuat...</div>
+                  <div id="home-guard-sub" style="font-size:12px; color:var(--action-text);"></div>
+                </div>
+              </div>
+              <span id="home-guard-status" class="chip-status chip-selesai">Siaga</span>
+            </div>
+
+            <div class="card" style="background:var(--action-main); color:#FFFFFF; cursor:pointer;" onclick="App.navigateTo('screen-penghuni-lapor')">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div style="font-size:18px; font-weight:800; font-family:var(--font-heading);">Lapor kejadian</div>
+                  <div style="font-size:12.5px; opacity:0.9; margin-top:4px;">Isi formulir 1 menit</div>
+                </div>
+                <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </div>
+            </div>
+
+            <div class="card" style="border: 1px solid var(--emergency); cursor:pointer;" onclick="App.navigateTo('screen-penghuni-darurat')">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div style="font-size:18px; font-weight:800; font-family:var(--font-heading); color:var(--emergency-text);">Darurat</div>
+                  <div style="font-size:12.5px; color:var(--action-text); margin-top:4px;">Panggil satpam sekarang</div>
+                </div>
+                <div style="color:var(--emergency);">
+                  <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 Columns Grid: Laporan Saya & Terbaru di Lingkungan -->
+          <div class="grid-2">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="font-size:17px;">Laporan saya</h3>
+                <span class="link-action" onclick="App.navigateTo('screen-penghuni-riwayat')">
+                  Lihat semua <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+              <div id="penghuni-recent-reports">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="font-size:17px;">Terbaru di lingkungan</h3>
+              </div>
+              <div class="card" style="padding:14px; cursor:pointer;" onclick="App.navigateTo('screen-penghuni-detail', { reportId: 'LP-261016-008' })">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <div style="font-weight:700; font-size:15px; color:var(--text-main);">Gangguan ketertiban</div>
+                  <span class="chip-status chip-selesai">Selesai</span>
+                </div>
+                <div style="font-size:12.5px; color:var(--action-text);">Blok E · 1 jam lalu</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 3: PENGHUNI - FORM LAPOR KEJADIAN
+        =============================================== -->
+        <section id="screen-penghuni-lapor" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Lapor Kejadian</h2>
+              <p>Sampaikan laporan gangguan atau kejadian keamanan ke pos jaga</p>
+            </div>
+            <button class="btn-outline-main" onclick="App.navigateTo('screen-penghuni-home')">
+              <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>Kembali</span>
+            </button>
+          </div>
+
+          <div class="card">
+            <form id="form-lapor" class="form-layout">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label">Jenis kejadian</label>
+                  <div class="chip-selector-grid">
+                    <button type="button" class="chip-choice-btn" data-val="Pencurian">Pencurian</button>
+                    <button type="button" class="chip-choice-btn active" data-val="Orang mencurigakan">Orang mencurigakan</button>
+                    <button type="button" class="chip-choice-btn" data-val="Kebakaran">Kebakaran</button>
+                    <button type="button" class="chip-choice-btn" data-val="Kecelakaan">Kecelakaan</button>
+                    <button type="button" class="chip-choice-btn" data-val="Gangguan ketertiban">Gangguan ketertiban</button>
+                    <button type="button" class="chip-choice-btn" data-val="Lainnya">Lainnya</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Blok lokasi kejadian</label>
+                  <div class="block-picker-grid">
+                    <button type="button" class="block-picker-btn" data-val="A">A</button>
+                    <button type="button" class="block-picker-btn" data-val="B">B</button>
+                    <button type="button" class="block-picker-btn" data-val="C">C</button>
+                    <button type="button" class="block-picker-btn active" data-val="D">D</button>
+                    <button type="button" class="block-picker-btn" data-val="E">E</button>
+                    <button type="button" class="block-picker-btn" data-val="F">F</button>
+                  </div>
+
+                  <div class="form-group" style="margin-top:10px;">
+                    <label class="form-label" for="lapor-titik-lokasi">Titik lokasi</label>
+                    <input type="text" id="lapor-titik-lokasi" class="form-input" placeholder="Contoh: depan rumah kosong No. 8" value="depan rumah kosong No. 8">
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="lapor-deskripsi">Ceritakan apa yang terjadi</label>
+                  <textarea id="lapor-deskripsi" class="form-textarea" placeholder="Deskripsikan kejadian dengan rinci...">Dua orang tidak dikenal berhenti di depan rumah kosong sejak sore dan memotret rumah-rumah di sekitar.</textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Waktu & Urgensi Kejadian</label>
+                  <div class="card" style="padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:13px; color:var(--text-main);">Waktu kejadian:</span>
+                    <span class="table-mono" style="font-weight:600;">Sekarang · <span class="clock-live-time">14.31</span></span>
+                  </div>
+
+                  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+                    <button type="button" class="chip-choice-btn urgency-choice-btn" data-val="Rendah">Rendah</button>
+                    <button type="button" class="chip-choice-btn urgency-choice-btn active" data-val="Sedang">Sedang</button>
+                    <button type="button" class="chip-choice-btn urgency-choice-btn" data-val="Tinggi">Tinggi</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <input type="file" id="photo-file-input" accept="image/*" multiple style="display:none;">
+                <div id="photo-uploader-box" class="photo-uploader">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  <span>Tambah foto bukti</span>
+                </div>
+                <div id="photo-previews-list" style="display:flex; gap:10px; margin-top:8px;"></div>
+              </div>
+
+              <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+                <button type="button" class="btn-outline-main" onclick="App.navigateTo('screen-penghuni-home')">Batal</button>
+                <button type="submit" class="btn-main">Kirim Laporan</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 4: PENGHUNI - RIWAYAT LAPORAN (TABLE DESKTOP)
+        =============================================== -->
+        <section id="screen-penghuni-riwayat" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Riwayat Laporan</h2>
+              <p id="penghuni-riwayat-subtitle">Memuat...</p>
+            </div>
+            <button class="btn-main" onclick="App.navigateTo('screen-penghuni-lapor')">
+              <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Buat Laporan Baru</span>
+            </button>
+          </div>
+
+          <div class="filter-tabs-group">
+            <button id="hist-tab-semua" class="filter-btn penghuni-hist-tab active" onclick="App.setHistoryFilter('Semua')">Semua (5)</button>
+            <button id="hist-tab-aktif" class="filter-btn penghuni-hist-tab" onclick="App.setHistoryFilter('Aktif')">Aktif (2)</button>
+            <button id="hist-tab-selesai" class="filter-btn penghuni-hist-tab" onclick="App.setHistoryFilter('Selesai')">Selesai (3)</button>
+          </div>
+
+          <!-- Desktop Table / Responsive List -->
+          <div id="penghuni-history-table-container">
+            <!-- Dynamic data table rendered here -->
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 5: PENGHUNI - DETAIL LAPORAN
+        =============================================== -->
+        <section id="screen-penghuni-detail" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Detail Laporan</h2>
+              <p>Rincian kejadian dan lini masa penanganan satpam</p>
+            </div>
+            <button class="btn-outline-main" onclick="App.navigateTo('screen-penghuni-riwayat')">
+              <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>Kembali ke Riwayat</span>
+            </button>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <span id="p-detail-id" class="table-id-cell" style="font-size:15px;">LP-261016-007</span>
+                <span id="p-detail-status-badge"></span>
+              </div>
+
+              <h3 id="p-detail-title" style="font-size:22px; margin-bottom:8px;">Orang mencurigakan</h3>
+
+              <div class="detail-grid-meta">
+                <div>
+                  <div class="meta-item-label">Lokasi</div>
+                  <div id="p-detail-location" class="meta-item-value">Blok D, depan No. 8</div>
+                </div>
+                <div>
+                  <div class="meta-item-label">Waktu kejadian</div>
+                  <div id="p-detail-time" class="meta-item-value table-mono">16 Okt 2026, 14.02</div>
+                </div>
+                <div>
+                  <div class="meta-item-label">Urgensi</div>
+                  <div id="p-detail-urgency" class="meta-item-value">Sedang</div>
+                </div>
+                <div>
+                  <div class="meta-item-label">Ditangani oleh</div>
+                  <div id="p-detail-handler" class="meta-item-value">Pak Darmawan</div>
+                </div>
+              </div>
+
+              <div style="margin-top:14px;">
+                <div class="meta-item-label" style="margin-bottom:4px;">Isi laporan warga:</div>
+                <p id="p-detail-desc" style="font-size:14px; line-height:1.6; color:var(--text-main); background:var(--bg-page); padding:14px; border-radius:var(--card-radius);">
+                  Dua orang tidak dikenal berhenti di depan rumah kosong dan memotret rumah-rumah di sekitarnya.
+                </p>
+              </div>
+
+              <div style="margin-top:16px;">
+                <div class="meta-item-label" style="margin-bottom:6px;">Foto Lampiran Bukti:</div>
+                <div id="p-detail-photos" style="display:flex; gap:10px;"></div>
+              </div>
+            </div>
+
+            <!-- Timeline Card -->
+            <div class="card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <h3 style="font-size:17px;">Perkembangan</h3>
+                <span id="p-detail-resptime" style="font-size:12.5px; color:var(--action-text); font-weight:600;">Respons 3 menit · tuntas 28 menit</span>
+              </div>
+
+              <div id="p-detail-timeline" class="timeline-wrapper"></div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 6: PENGHUNI - INFO LINGKUNGAN
+        =============================================== -->
+        <section id="screen-penghuni-info" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Info Lingkungan</h2>
+              <p>Perumnas Pesona Cirebon Regency</p>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card">
+              <h3 class="card-title">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Satpam bertugas hari ini</span>
+              </h3>
+              
+              <div id="info-guards-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+            </div>
+
+            <!-- Pengumuman Keamanan -->
+            <div class="card">
+              <h3 class="card-title">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span>Pengumuman keamanan</span>
+              </h3>
+
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <div class="card" style="padding:12px;">
+                  <div style="font-weight:700; margin-bottom:4px;">Patroli malam ditambah satu putaran</div>
+                  <div style="font-size:13px; color:var(--action-text); line-height:1.4;">
+                    Mulai 19 Okt 2026, putaran tambahan pukul 01.00 melewati Blok D dan E.
+                  </div>
+                </div>
+
+                <div class="card" style="padding:12px;">
+                  <div style="font-weight:700; margin-bottom:4px;">Tamu wajib lapor di pos gerbang</div>
+                  <div style="font-size:13px; color:var(--action-text); line-height:1.4;">
+                    Penghuni yang menerima tamu menginap diminta memberi tahu pos sebelum pukul 21.00.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hubungi Pos -->
+            <div class="card">
+              <h3 class="card-title">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>Hubungi pos</span>
+              </h3>
+
+              <div class="card" style="padding:16px;">
+                <div style="font-size:16px; font-weight:700; color:var(--text-main);">Pos Gerbang Utama</div>
+                <div style="font-size:12.5px; color:var(--action-text); margin-bottom:14px;">Siaga 24 jam · Hotline Darurat</div>
+                <button class="btn-outline-main" style="width:100%;" onclick="App.showToast('Menghubungi Pos Gerbang: (0231) 889-211')">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span>Telepon Pos Jaga</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 7: PENGHUNI - DARURAT (PANIC BUTTON)
+        =============================================== -->
+        <section id="screen-penghuni-darurat" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2 style="color:var(--emergency-text);">Sinyal Darurat</h2>
+              <p>Sinyal langsung masuk ke Pos Gerbang Utama secara seketika</p>
+            </div>
+          </div>
+
+          <div class="card" style="max-width:800px; margin:0 auto; width:100%;">
+            <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--bg-page); border-radius:var(--card-radius); margin-bottom:20px;">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div>
+                <div style="font-size:11px; text-transform:uppercase; color:var(--action-text); font-weight:600;">Lokasi Anda Saat Ini</div>
+                <div id="penghuni-darurat-loc" style="font-size:16px; font-weight:700; color:var(--text-main);">Memuat...</div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:16px;">
+              <label class="form-label">Jenis keadaan darurat</label>
+              <div class="grid-3">
+                <div class="card emergency-type-box" data-type="Kebakaran" style="text-align:center; padding:20px; cursor:pointer;">
+                  <div style="color:var(--emergency); margin-bottom:8px;">
+                    <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                  </div>
+                  <div style="font-weight:700; font-size:16px;">Kebakaran</div>
+                  <div style="font-size:12px; color:var(--action-text);">Api atau asap</div>
+                </div>
+
+                <div class="card emergency-type-box selected" data-type="Kejahatan" style="text-align:center; padding:20px; cursor:pointer; border-color:var(--emergency);">
+                  <div style="color:var(--emergency); margin-bottom:8px;">
+                    <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"/><line x1="18" y1="6" x2="22" y2="10"/><line x1="22" y1="6" x2="18" y2="10"/></svg>
+                  </div>
+                  <div style="font-weight:700; font-size:16px; color:var(--emergency-text);">Kejahatan</div>
+                  <div style="font-size:12px; color:var(--emergency-text);">Maling atau ancaman</div>
+                </div>
+
+                <div class="card emergency-type-box" data-type="Medis" style="text-align:center; padding:20px; cursor:pointer;">
+                  <div style="color:var(--emergency); margin-bottom:8px;">
+                    <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                  </div>
+                  <div style="font-weight:700; font-size:16px;">Medis</div>
+                  <div style="font-size:12px; color:var(--action-text);">Sakit atau kecelakaan</div>
+                </div>
+              </div>
+            </div>
+
+            <p style="font-size:13px; color:var(--action-text); line-height:1.5; margin-bottom:20px;">
+              Gunakan hanya untuk keadaan yang mengancam keselamatan. Untuk kejadian biasa, pakai menu Lapor.
+            </p>
+
+            <button id="btn-send-emergency" class="btn-emergency" style="width:100%; padding:16px; font-size:16px;">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Kirim sinyal darurat</span>
+            </button>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 8: SATPAM - BERANDA & LAPORAN MASUK (TABLE)
+        =============================================== -->
+        <section id="screen-satpam-inbox" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Laporan Masuk</h2>
+              <p id="satpam-inbox-subtitle">Memuat...</p>
+            </div>
+            <button class="btn-main" onclick="App.navigateTo('screen-satpam-patroli')">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              <span>Jadwal Patroli</span>
+            </button>
+          </div>
+
+          <!-- 3 KPI Cards -->
+          <div class="grid-3">
+            <div class="kpi-card">
+              <div id="satpam-count-baru" class="kpi-val">3</div>
+              <div class="kpi-label">Baru</div>
+            </div>
+            <div class="kpi-card">
+              <div id="satpam-count-diproses" class="kpi-val">1</div>
+              <div class="kpi-label">Diproses</div>
+            </div>
+            <div class="kpi-card">
+              <div id="satpam-count-selesai" class="kpi-val">1</div>
+              <div class="kpi-label">Selesai hari ini</div>
+            </div>
+          </div>
+
+          <!-- Emergency Alert Banner -->
+          <div id="satpam-emergency-banner"></div>
+
+          <!-- Table 1: Perlu Ditangani -->
+          <div>
+            <h3 style="font-size:18px; margin-bottom:12px;">Perlu ditangani</h3>
+            <div id="satpam-reports-table-container"></div>
+          </div>
+
+          <!-- Table 2: Selesai Hari Ini -->
+          <div style="margin-top:16px;">
+            <h3 style="font-size:18px; margin-bottom:12px;">Selesai hari ini</h3>
+            <div id="satpam-completed-table-container"></div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 9: SATPAM - DETAIL & TINDAK LANJUT
+        =============================================== -->
+        <section id="screen-satpam-detail" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Tindak Lanjut</h2>
+              <p>Verifikasi laporan warga dan koordinasikan penanganan lapangan</p>
+            </div>
+            <button class="btn-outline-main" onclick="App.navigateTo('screen-satpam-inbox')">
+              <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>Kembali ke Laporan Masuk</span>
+            </button>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <span id="s-detail-id" class="table-id-cell" style="font-size:15px;">LP-261016-010</span>
+                <span id="s-detail-status-badge"></span>
+              </div>
+
+              <h3 id="s-detail-title" style="font-size:22px; margin-bottom:8px;">Orang mencurigakan</h3>
+
+              <div class="detail-grid-meta">
+                <div>
+                  <div class="meta-item-label">Pelapor</div>
+                  <div id="s-detail-reporter" class="meta-item-value">Bu Ratna, C-12</div>
+                </div>
+                <div>
+                  <div class="meta-item-label">Waktu masuk</div>
+                  <div id="s-detail-time" class="meta-item-value table-mono">16 Okt, 14.31</div>
+                </div>
+                <div>
+                  <div class="meta-item-label">Lokasi</div>
+                  <div id="s-detail-location" class="meta-item-value">Blok D, depan No. 8</div>
+                </div>
+                <div>
+                  <div class="meta-item-label">Urgensi</div>
+                  <div id="s-detail-urgency" class="meta-item-value">Sedang</div>
+                </div>
+              </div>
+
+              <div style="margin-top:14px;">
+                <div class="meta-item-label" style="margin-bottom:4px;">Isi laporan warga:</div>
+                <p id="s-detail-desc" style="font-size:14px; line-height:1.6; background:var(--bg-page); padding:14px; border-radius:var(--card-radius);">
+                  Seorang pria berdiri lama di depan rumah kosong dan mengamati pagar belakang.
+                </p>
+              </div>
+
+              <div style="margin-top:16px;">
+                <button class="btn-outline-main" onclick="App.showToast('Menampilkan foto bukti dari pelapor')">
+                  <svg class="svg-icon" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  <span>Foto bukti dari pelapor</span>
+                </button>
+              </div>
+
+              <div id="satpam-action-buttons" style="display:flex; gap:10px; margin-top:20px;"></div>
+            </div>
+
+            <!-- Time Log Notes -->
+            <div class="card">
+              <h3 class="card-title">
+                <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Catatan waktu</span>
+              </h3>
+              <div id="s-detail-timelog"></div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 10: SATPAM - JADWAL PATROLI
+        =============================================== -->
+        <section id="screen-satpam-patroli" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Jadwal Patroli</h2>
+              <p id="satpam-patrol-subtitle">Memuat...</p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-weight:700;">Progres Putaran Patroli</span>
+              <span id="patrol-progress-text" style="font-weight:700; color:var(--action-text);">3 dari 8</span>
+            </div>
+            <div class="block-progress-track">
+              <div id="patrol-progress-fill" class="block-progress-fill" style="width: 37.5%;"></div>
+            </div>
+          </div>
+
+          <div id="satpam-patrol-list"></div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 11: OWNER - PEMANTAUAN PER BLOK
+        =============================================== -->
+        <section id="screen-owner-pantau" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Pemantauan</h2>
+              <p>Per blok · 1–16 Okt 2026 · 24 kejadian</p>
+            </div>
+          </div>
+
+          <!-- Alert Banner: Escalated to Owner -->
+          <div class="alert-banner" onclick="App.openOwnerReportDetailModal('LP-261015-011')">
+            <div class="alert-banner-left">
+              <div class="alert-banner-icon">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div>
+                <div style="font-size:15px; font-weight:700;">1 laporan menunggu arahan Owner</div>
+                <div style="font-size:12.5px;">Pencurian · Blok E · dieskalasi satpam</div>
+              </div>
+            </div>
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <!-- Block Matrix Grid (A to F) -->
+          <div>
+            <h3 style="font-size:18px; margin-bottom:12px;">Kejadian tiap blok</h3>
+            <div id="owner-blocks-grid" class="grid-6"></div>
+          </div>
+
+          <!-- Selected Block Detail Card -->
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px;">
+              <h3 id="owner-sel-block-name" style="font-size:20px;">Blok D</h3>
+              <span id="owner-sel-block-count" class="table-mono" style="font-size:14px; color:var(--action-text); font-weight:700;">8 kejadian</span>
+            </div>
+
+            <div class="grid-2" style="border-top:1px solid var(--card-border); padding-top:12px; margin-bottom:16px;">
+              <div>
+                <span class="meta-item-label">Jenis terbanyak</span>
+                <div id="owner-sel-block-top" class="meta-item-value">Orang mencurigakan</div>
+              </div>
+              <div>
+                <span class="meta-item-label">Laporan terakhir</span>
+                <div id="owner-sel-block-time" class="meta-item-value table-mono">16 Okt 2026, 14.31</div>
+              </div>
+            </div>
+
+            <button class="btn-outline-main" onclick="App.viewOwnerBlockReports()">
+              Lihat laporan blok ini
+            </button>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 12: OWNER - SEMUA LAPORAN (TABLE)
+        =============================================== -->
+        <section id="screen-owner-laporan" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Semua Laporan</h2>
+              <p>Seluruh blok · penanggung jawab tercatat</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
+            <div style="flex:1; min-width:260px;">
+              <input type="text" id="owner-search-reports" class="form-input" placeholder="Cari nomor laporan atau blok...">
+            </div>
+            <div class="filter-tabs-group" style="margin-bottom:0;">
+              <button class="filter-btn owner-rep-tab active" onclick="App.setOwnerReportFilter('Semua')">Semua</button>
+              <button class="filter-btn owner-rep-tab" onclick="App.setOwnerReportFilter('Eskalasi')">Eskalasi</button>
+              <button class="filter-btn owner-rep-tab" onclick="App.setOwnerReportFilter('Baru')">Baru</button>
+              <button class="filter-btn owner-rep-tab" onclick="App.setOwnerReportFilter('Diproses')">Diproses</button>
+              <button class="filter-btn owner-rep-tab" onclick="App.setOwnerReportFilter('Selesai')">Selesai</button>
+            </div>
+          </div>
+
+          <div id="owner-reports-table-container"></div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 13: OWNER - KINERJA SATPAM
+        =============================================== -->
+        <section id="screen-owner-satpam" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Kinerja Satpam</h2>
+              <p id="owner-satpam-subtitle">Memuat...</p>
+            </div>
+          </div>
+
+          <!-- Top 2 KPI -->
+          <div class="grid-2">
+            <div class="kpi-card">
+              <div class="kpi-val">6 mnt</div>
+              <div class="kpi-label">Respons rata-rata</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">93%</div>
+              <div class="kpi-label">Titik patroli tercatat</div>
+            </div>
+          </div>
+
+          <!-- Satpam Performance Cards -->
+          <div id="owner-satpam-cards" class="grid-3"></div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 14: OWNER - KELOLA PENGGUNA (TABLE)
+        =============================================== -->
+        <section id="screen-owner-pengguna" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Kelola Pengguna</h2>
+              <p>Akun penghuni dan petugas keamanan</p>
+            </div>
+            <button class="btn-main" onclick="App.openAddUserModal()">
+              <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Tambah Pengguna</span>
+            </button>
+          </div>
+
+          <div class="filter-tabs-group">
+            <button class="filter-btn owner-user-tab active" data-tab="penghuni">Penghuni</button>
+            <button class="filter-btn owner-user-tab" data-tab="satpam">Satpam</button>
+            <button class="filter-btn owner-user-tab" data-tab="pendaftaran" id="tab-pendaftaran-btn">
+              Pendaftaran
+              <span class="tab-badge" id="tab-pendaftaran-badge" style="display:none;">0</span>
+            </button>
+          </div>
+
+          <div id="owner-users-table-container"></div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 15: DIREKTUR - DASHBOARD RINGKASAN
+        =============================================== -->
+        <section id="screen-direktur-summary" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Ringkasan</h2>
+              <p>1–16 Okt 2026 · Pesona Cirebon Regency</p>
+            </div>
+            <button class="btn-main" onclick="App.navigateTo('screen-direktur-laporan')">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span>Buka Laporan Periodik</span>
+            </button>
+          </div>
+
+          <!-- 4 KPI Grid -->
+          <div class="grid-4">
+            <div class="kpi-card">
+              <div class="kpi-val">24</div>
+              <div class="kpi-label">Kejadian dilaporkan</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">88%</div>
+              <div class="kpi-label">Selesai (21 dari 24)</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">6 mnt</div>
+              <div class="kpi-label">Respons rata-rata</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">2</div>
+              <div class="kpi-label">Dieskalasi ke Owner</div>
+            </div>
+          </div>
+
+          <!-- Charts Grid: Kejadian per Minggu & Jenis Kejadian -->
+          <div class="grid-2">
+            <div class="chart-container">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px;">
+                <h3 style="font-size:16px;">Kejadian per minggu</h3>
+                <span style="font-size:12px; color:var(--action-text);">minggu ketiga baru 2 hari</span>
+              </div>
+
+              <div class="bar-chart-vertical">
+                <div class="bar-col">
+                  <span class="bar-val">9</span>
+                  <div class="bar-pillar" style="height: 80px;"></div>
+                  <span class="bar-col-label table-mono">1–7 Okt</span>
+                </div>
+                <div class="bar-col">
+                  <span class="bar-val">11</span>
+                  <div class="bar-pillar" style="height: 100px;"></div>
+                  <span class="bar-col-label table-mono">8–14 Okt</span>
+                </div>
+                <div class="bar-col">
+                  <span class="bar-val">4</span>
+                  <div class="bar-pillar" style="height: 40px;"></div>
+                  <span class="bar-col-label table-mono">15–16 Okt</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Horizontal Chart -->
+            <div class="chart-container">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px;">
+                <h3 style="font-size:16px;">Jenis kejadian</h3>
+                <span style="font-size:12px; color:var(--action-text);">Blok D terbanyak: 8 kejadian</span>
+              </div>
+
+              <div class="horizontal-bar-list">
+                <div class="hbar-row">
+                  <span class="hbar-label">Orang mencurigakan</span>
+                  <div class="hbar-track"><div class="hbar-fill" style="width:85%;"></div></div>
+                  <span class="hbar-count">7</span>
+                </div>
+                <div class="hbar-row">
+                  <span class="hbar-label">Gangguan ketertiban</span>
+                  <div class="hbar-track"><div class="hbar-fill" style="width:75%;"></div></div>
+                  <span class="hbar-count">6</span>
+                </div>
+                <div class="hbar-row">
+                  <span class="hbar-label">Pencurian</span>
+                  <div class="hbar-track"><div class="hbar-fill" style="width:62%;"></div></div>
+                  <span class="hbar-count">5</span>
+                </div>
+                <div class="hbar-row">
+                  <span class="hbar-label">Lainnya</span>
+                  <div class="hbar-track"><div class="hbar-fill" style="width:38%;"></div></div>
+                  <span class="hbar-count">3</span>
+                </div>
+                <div class="hbar-row">
+                  <span class="hbar-label">Kecelakaan</span>
+                  <div class="hbar-track"><div class="hbar-fill" style="width:25%;"></div></div>
+                  <span class="hbar-count">2</span>
+                </div>
+                <div class="hbar-row">
+                  <span class="hbar-label">Kebakaran</span>
+                  <div class="hbar-track"><div class="hbar-fill" style="width:12%; background-color:var(--emergency);"></div></div>
+                  <span class="hbar-count">1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==============================================
+             LAYAR 16: DIREKTUR - LAPORAN PERIODIK
+        =============================================== -->
+        <section id="screen-direktur-laporan" class="screen-view">
+          <div class="screen-header-row">
+            <div class="screen-title-group">
+              <h2>Laporan Periodik</h2>
+              <p>Rekap keamanan untuk arsip dan rapat</p>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div class="card" style="margin-bottom:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--action-text); font-weight:700;">BERJALAN · BELUM FINAL</span>
+              <span class="chip-status chip-diterima">Draf</span>
+            </div>
+            <div style="font-size:18px; font-weight:800; color:var(--text-main); margin-bottom:4px;">Laporan Oktober 2026</div>
+            <div style="font-size:13px; color:var(--action-text);">
+              Data 1–16 Okt · 24 kejadian, 21 selesai, respons rata-rata 6 menit
+            </div>
+          </div>
+
+          <div class="filter-tabs-group">
+            <button class="filter-btn period-toggle-btn active" data-period="mingguan">Mingguan</button>
+            <button class="filter-btn period-toggle-btn" data-period="bulanan">Bulanan</button>
+          </div>
+
+          <div id="direktur-periodic-reports-list"></div>
+        </section>
+
+      </div> <!-- /content-body -->
+
+      <!-- MOBILE BOTTOM NAVIGATION (< 768px) -->
+      <nav id="mobile-bottom-nav" class="mobile-bottom-nav"></nav>
+
+    </div> <!-- /app-main -->
+
+  </div> <!-- /app-container -->
+
+  <!-- GLOBAL MODAL -->
+  <div id="global-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title">Judul Dialog</h3>
+        <button class="modal-close-btn" onclick="App.closeModal()">
+          <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div id="modal-footer" class="modal-footer">
+        <button class="btn-main" onclick="App.closeModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="global-toast" class="toast-notice">Notifikasi</div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
